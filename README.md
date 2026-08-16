@@ -14,7 +14,7 @@ npx playwright install chromium    # one-time, ~90MB
 npm run dev                         # http://localhost:5173
 ```
 
-That's the entire setup. You should see the existing decks and a folder tree of shared slides in the sidebar.
+That's the entire setup. You should see the bundled `example` deck and a folder tree of shared slides in the sidebar.
 
 If you have Claude Code (or any agent that can edit files and run shell commands), it can read [`CLAUDE.md`](./CLAUDE.md) and start authoring slides immediately. The CLI listed below is the agent's API.
 
@@ -189,6 +189,10 @@ Vite + React 18 + TypeScript + React Router. Playwright for PDF. No CSS framewor
 - Themes/transitions. Slides are React — write your own.
 - Drag-to-reorder in the edit view. Use `npm run move:slide`.
 - Slide versioning. Use git.
-- A hosted viewer. Use the PDF, or stay tuned for `publish`.
+- Auth on published decks. `npm run publish` puts a deck on a public `*.pages.dev` URL — anyone with the link can read it. Send the PDF for anything confidential.
 
-If your audience for these decks isn't technical, that's fine — they'll receive the PDF. The authoring workflow is for you (and your agent).
+If your audience for these decks isn't technical, that's fine — they'll receive the PDF or a link. The authoring workflow is for you (and your agent).
+
+## License
+
+MIT — see [LICENSE](./LICENSE).

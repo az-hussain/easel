@@ -13,6 +13,7 @@ This file teaches you the conventions you need to operate here productively with
 - **Slides are always 1920×1080.** The `<Slide>` wrapper enforces this. Don't hardcode other dimensions.
 - **The CLI is how you mutate the manifest.** Don't write JSON by hand — use the scripts. They validate paths and keep formatting consistent.
 - **You are not allowed to skip Playwright export.** When the user asks for a PDF, run `npm run export -- <deck>`. Don't fake it by stitching screenshots.
+- **Chromium is a separate one-time install.** `npm install` does *not* download it. If export fails with `Executable doesn't exist at …/ms-playwright/chromium-…`, run `npx playwright install chromium` (~90MB) and retry. That's the fix — don't work around it.
 - **The viewer's Export button runs the same pipeline.** During `npm run dev`, the deck viewer has an Export button that prompts for a save location and shells out to `scripts/export-pdf.mjs` via dev-server middleware. That's a convenience for the user — you should still drive the CLI, which is scriptable and gives you stderr on failure.
 
 ---
@@ -69,7 +70,8 @@ export default function MySlide() {
 
 **Design tokens are in `src/styles.css`.** When you build a slide, prefer the existing palette and type stack over inventing new colors:
 
-- Primary font: `var(--font-display)` for big serif headlines (Source Serif 4), `var(--font-ui)` for UI text (Inter), `var(--font-mono)` for code/paths.
+- Slide content inherits `var(--font-ui)` (Inter) — that's what the bundled examples use. Set `var(--font-display)` (Source Serif 4) explicitly on a headline when you want serif; it won't happen by default. `var(--font-mono)` (JetBrains Mono) for code and paths.
+- Those three families are the only ones loaded in `index.html`. If you want another, add it there first — a `font-family` referencing an unloaded font silently falls back.
 - Surfaces: `var(--bg)` `var(--bg-1)` `var(--bg-2)` `var(--bg-3)` (escalating elevation).
 - Text: `var(--text)` `var(--text-2)` `var(--text-3)` (escalating dim).
 - Accent: `var(--accent)` (indigo). Use sparingly — one accent element per slide max.
