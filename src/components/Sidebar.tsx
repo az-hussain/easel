@@ -9,9 +9,9 @@ export function Sidebar() {
   return (
     <aside className="sidebar">
       <div className="workspace">
-        <div className="mark">g</div>
+        <div className="mark">E</div>
         <div>
-          <div className="title">easel</div>
+          <div className="title">Easel</div>
           <div className="subtitle">slide library</div>
         </div>
       </div>
