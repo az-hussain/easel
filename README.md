@@ -172,6 +172,12 @@ This isn't a SaaS. It's a developer tool. Slides compound in value over time the
 
 Each slide renders inside a `print-page` div with `page-break-after: always`. One slide per page, native resolution.
 
+**From the viewer.** The deck viewer has an **Export** button next to Slides / Edit / Fullscreen. It opens a native Save dialog so you choose the destination, then runs the exact pipeline above and writes the PDF there — byte-identical to the CLI output.
+
+It works during `npm run dev` only. The app has no backend, so the export runs in Vite dev-server middleware (`vite.config.ts`) that shells out to `scripts/export-pdf.mjs`. Built output has no such endpoint, so the button is compiled out.
+
+The Save dialog uses the File System Access API (Chrome/Edge). Elsewhere the PDF lands in your normal downloads folder instead.
+
 ## Stack
 
 Vite + React 18 + TypeScript + React Router. Playwright for PDF. No CSS framework — design tokens are in `src/styles.css`. Source Serif 4 / Inter / JetBrains Mono via Google Fonts.

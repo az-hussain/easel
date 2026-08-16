@@ -16,6 +16,8 @@ export function DeckView() {
   const [idle, setIdle] = useState(false)
   const [stripOpen, setStripOpen] = useState(false)
   const [isFs, setIsFs] = useState(false)
+  const [exportState, setExportState] = useState<'idle' | 'working' | 'done' | 'error'>('idle')
+  const [exportErr, setExportErr] = useState<string | null>(null)
   const viewerRef = useRef<HTMLDivElement>(null)
   const idleTimer = useRef<number | undefined>(undefined)
 
@@ -40,6 +42,60 @@ export function DeckView() {
       console.warn('fullscreen failed', e)
     }
   }, [])
+
+  const runExport = useCallback(async () => {
+    if (!deck || exportState === 'working') return
+    const filename = `${deck.name}.pdf`
+
+    // Open the save dialog FIRST, while the click's transient user activation
+    // is still live. showSaveFilePicker() requires it, and activation expires
+    // after a few seconds — long before a Playwright export finishes. Asking
+    // after the export would throw SecurityError every time.
+    let handle: FileSystemFileHandle | null = null
+    const showSave = (window as unknown as {
+      showSaveFilePicker?: (o: unknown) => Promise<FileSystemFileHandle>
+    }).showSaveFilePicker
+    if (showSave) {
+      try {
+        handle = await showSave.call(window, {
+          suggestedName: filename,
+          types: [{ description: 'PDF document', accept: { 'application/pdf': ['.pdf'] } }],
+        })
+      } catch (e) {
+        // User dismissed the dialog — not an error, just stop.
+        if ((e as DOMException)?.name === 'AbortError') return
+        handle = null // unsupported/blocked → fall through to a plain download
+      }
+    }
+
+    setExportState('working')
+    setExportErr(null)
+    try {
+      const res = await fetch(`/__export/${encodeURIComponent(deck.name)}`, { method: 'POST' })
+      if (!res.ok) throw new Error((await res.text()) || `export failed (${res.status})`)
+      const blob = await res.blob()
+
+      if (handle) {
+        const w = await handle.createWritable()
+        await w.write(blob)
+        await w.close()
+      } else {
+        // Firefox/Safari, or picker unavailable: hand it to the download shelf.
+        const url = URL.createObjectURL(blob)
+        const a = document.createElement('a')
+        a.href = url
+        a.download = filename
+        a.click()
+        URL.revokeObjectURL(url)
+      }
+      setExportState('done')
+      window.setTimeout(() => setExportState('idle'), 2000)
+    } catch (e) {
+      setExportErr(e instanceof Error ? e.message : 'export failed')
+      setExportState('error')
+      window.setTimeout(() => setExportState('idle'), 4000)
+    }
+  }, [deck, exportState])
 
   // Track fullscreen state
   useEffect(() => {
@@ -144,6 +200,24 @@ export function DeckView() {
             <Link to={`/decks/${deck.name}/edit`} className="btn ghost small">
               Edit
             </Link>
+          )}
+          {/* Dev only: the export middleware lives in the Vite dev server, so
+              the button must not appear in any built output. */}
+          {import.meta.env.DEV && (
+            <button
+              className="btn ghost small"
+              onClick={runExport}
+              disabled={exportState === 'working'}
+              title={exportErr ?? 'Export this deck to PDF'}
+            >
+              {exportState === 'working'
+                ? 'Exporting…'
+                : exportState === 'done'
+                  ? 'Saved ✓'
+                  : exportState === 'error'
+                    ? 'Failed'
+                    : 'Export'}
+            </button>
           )}
           <button
             className="btn ghost small"

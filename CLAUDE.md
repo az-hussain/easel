@@ -13,6 +13,7 @@ This file teaches you the conventions you need to operate here productively with
 - **Slides are always 1920×1080.** The `<Slide>` wrapper enforces this. Don't hardcode other dimensions.
 - **The CLI is how you mutate the manifest.** Don't write JSON by hand — use the scripts. They validate paths and keep formatting consistent.
 - **You are not allowed to skip Playwright export.** When the user asks for a PDF, run `npm run export -- <deck>`. Don't fake it by stitching screenshots.
+- **The viewer's Export button runs the same pipeline.** During `npm run dev`, the deck viewer has an Export button that prompts for a save location and shells out to `scripts/export-pdf.mjs` via dev-server middleware. That's a convenience for the user — you should still drive the CLI, which is scriptable and gives you stderr on failure.
 
 ---
 
