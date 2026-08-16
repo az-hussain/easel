@@ -1,0 +1,13 @@
+{
+  "$schema": "../../schemas/deck.schema.json",
+  "title": "Example deck",
+  "description": "Bundled example showing shared slides + a deck-local one.",
+  "author": "you",
+  "createdAt": "2026-05-29",
+  "slides": [
+    "slides/shared/examples/title.tsx",
+    "slides/shared/examples/three-points.tsx",
+    "slides/shared/examples/chart.tsx",
+    "decks/example/slides/thanks.tsx"
+  ]
+}

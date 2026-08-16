@@ -1,0 +1,18 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "GalleryConfig",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "$schema": { "type": "string" },
+    "host": {
+      "type": "string",
+      "enum": ["cloudflare-pages"],
+      "description": "Static host used by `npm run publish`."
+    },
+    "projectPrefix": {
+      "type": "string",
+      "description": "Prefix for Cloudflare Pages project names. Each deck becomes `<prefix>-<deck>`. Subdomain becomes `<prefix>-<deck>.pages.dev`."
+    }
+  }
+}

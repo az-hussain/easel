@@ -1,0 +1,19 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "PublishedDecks",
+  "description": "Map of deck name to its latest publication. Committed to git so teammates can see what's live.",
+  "type": "object",
+  "additionalProperties": {
+    "type": "object",
+    "required": ["url", "publishedAt", "host"],
+    "additionalProperties": false,
+    "properties": {
+      "url": { "type": "string", "format": "uri" },
+      "publishedAt": { "type": "string", "format": "date-time" },
+      "publishedBy": { "type": "string" },
+      "host": { "type": "string", "enum": ["cloudflare-pages"] },
+      "projectName": { "type": "string" },
+      "deploymentId": { "type": "string" }
+    }
+  }
+}

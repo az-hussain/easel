@@ -1,0 +1,714 @@
+:root {
+  color-scheme: dark;
+
+  /* Surfaces */
+  --bg: #08080a;
+  --bg-1: #0e0e11;
+  --bg-2: #15151a;
+  --bg-3: #1c1c22;
+  --bg-hover: #1f1f26;
+
+  /* Lines */
+  --border: #1f1f25;
+  --border-strong: #2a2a32;
+
+  /* Text */
+  --text: #ecedef;
+  --text-2: #9a9da6;
+  --text-3: #6a6d76;
+  --text-faint: #4a4d55;
+
+  /* Accent */
+  --accent: #6470ff;
+  --accent-hover: #7884ff;
+  --accent-bg: rgba(100, 112, 255, 0.13);
+  --accent-bg-strong: rgba(100, 112, 255, 0.22);
+
+  /* Status */
+  --danger: #ff5d6c;
+  --warn: #f5a524;
+  --ok: #20c997;
+
+  /* Type */
+  --font-display: 'Source Serif 4', 'Source Serif Pro', Georgia, serif;
+  --font-ui: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* Sizes */
+  --t-xs: 11px;
+  --t-sm: 12px;
+  --t-base: 13px;
+  --t-md: 14px;
+  --t-lg: 16px;
+  --t-xl: 20px;
+  --t-2xl: 28px;
+  --t-3xl: 40px;
+  --t-display: 56px;
+
+  /* Spacing (4px grid) */
+  --s-1: 4px;
+  --s-2: 8px;
+  --s-3: 12px;
+  --s-4: 16px;
+  --s-5: 20px;
+  --s-6: 24px;
+  --s-8: 32px;
+  --s-10: 40px;
+  --s-12: 48px;
+  --s-16: 64px;
+
+  /* Radii */
+  --r-sm: 4px;
+  --r-md: 6px;
+  --r-lg: 10px;
+  --r-xl: 14px;
+
+  /* Motion */
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --t-fast: 120ms;
+  --t-base-dur: 180ms;
+
+  /* Layout */
+  --sidebar-w: 268px;
+}
+
+* { box-sizing: border-box; }
+
+html, body, #root {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-ui);
+  font-size: var(--t-md);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: 'cv11', 'ss01', 'ss03';
+}
+
+button { font-family: inherit; }
+input, textarea { font-family: inherit; color: inherit; }
+code, pre, .mono { font-family: var(--font-mono); }
+
+a { color: var(--text); text-decoration: none; }
+a:hover { color: var(--accent); }
+
+::selection { background: var(--accent-bg-strong); color: var(--text); }
+
+/* Scrollbars: thin and quiet */
+*::-webkit-scrollbar { width: 8px; height: 8px; }
+*::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 4px; }
+*::-webkit-scrollbar-thumb:hover { background: var(--text-3); }
+*::-webkit-scrollbar-track { background: transparent; }
+
+/* =========================================================================
+   App shell
+   ========================================================================= */
+
+.app {
+  display: grid;
+  grid-template-columns: var(--sidebar-w) 1fr;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.sidebar {
+  background: var(--bg-1);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.workspace {
+  padding: var(--s-5) var(--s-5) var(--s-3);
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+  border-bottom: 1px solid var(--border);
+}
+.workspace .mark {
+  width: 28px;
+  height: 28px;
+  border-radius: 7px;
+  background: linear-gradient(135deg, var(--accent) 0%, #a378ff 100%);
+  display: grid;
+  place-items: center;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 16px;
+  color: white;
+}
+.workspace .title {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: var(--t-lg);
+  letter-spacing: -0.01em;
+}
+.workspace .subtitle {
+  font-size: var(--t-xs);
+  color: var(--text-3);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.sidebar-scroll {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--s-2) 0 var(--s-6);
+}
+
+.side-section {
+  padding: var(--s-3) var(--s-3) var(--s-1);
+}
+.side-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--s-2) var(--s-3);
+  margin-bottom: var(--s-1);
+}
+.side-section-header h3 {
+  font-size: var(--t-xs);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  margin: 0;
+  font-weight: 600;
+}
+.side-section-header .add {
+  background: transparent;
+  border: none;
+  color: var(--text-3);
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: var(--r-sm);
+  font-size: var(--t-md);
+  line-height: 1;
+}
+.side-section-header .add:hover { color: var(--text); background: var(--bg-hover); }
+
+.side-row {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  padding: 6px var(--s-3);
+  margin: 1px var(--s-2);
+  border-radius: var(--r-md);
+  color: var(--text-2);
+  font-size: var(--t-base);
+  cursor: pointer;
+  user-select: none;
+  transition: background var(--t-fast) var(--ease), color var(--t-fast) var(--ease);
+}
+.side-row:hover { background: var(--bg-hover); color: var(--text); }
+.side-row.active { background: var(--accent-bg); color: var(--text); }
+.side-row.active .row-meta { color: var(--text-2); }
+.side-row .row-icon {
+  width: 14px;
+  height: 14px;
+  flex: 0 0 auto;
+  color: var(--text-3);
+  display: grid;
+  place-items: center;
+}
+.side-row.active .row-icon { color: var(--accent); }
+.side-row .row-label { flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.side-row .row-meta { font-size: var(--t-xs); color: var(--text-3); font-variant-numeric: tabular-nums; }
+
+.side-empty {
+  padding: var(--s-2) var(--s-5);
+  color: var(--text-3);
+  font-size: var(--t-sm);
+  font-style: italic;
+}
+
+/* Folder tree */
+.tree-node {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.tree-children {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  padding-left: 14px;
+  border-left: 1px solid var(--border);
+  margin-left: 18px;
+}
+.tree-chevron {
+  width: 14px;
+  flex: 0 0 auto;
+  color: var(--text-3);
+  font-size: 9px;
+  transition: transform var(--t-fast) var(--ease);
+}
+.tree-chevron.open { transform: rotate(90deg); }
+
+/* =========================================================================
+   Main
+   ========================================================================= */
+
+.main {
+  background: var(--bg);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.main-scroll { flex: 1; overflow-y: auto; }
+
+.toolbar {
+  height: 52px;
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+  padding: 0 var(--s-6);
+  border-bottom: 1px solid var(--border);
+  background: var(--bg);
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+.toolbar .crumbs {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  font-size: var(--t-base);
+  color: var(--text-2);
+  min-width: 0;
+}
+.toolbar .crumbs .sep { color: var(--text-faint); }
+.toolbar .crumbs a:hover { color: var(--text); }
+.toolbar .crumbs .leaf { color: var(--text); font-family: var(--font-mono); font-size: var(--t-sm); }
+.toolbar .spacer { flex: 1; }
+.toolbar .meta { font-size: var(--t-sm); color: var(--text-3); }
+
+.page {
+  padding: var(--s-8) var(--s-8) var(--s-12);
+  max-width: 1480px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.page-head { margin-bottom: var(--s-8); }
+.page-head h1 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: var(--t-3xl);
+  letter-spacing: -0.02em;
+  margin: 0 0 var(--s-2);
+}
+.page-head .lede {
+  font-size: var(--t-md);
+  color: var(--text-2);
+  margin: 0;
+  max-width: 640px;
+}
+
+.section-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding-bottom: var(--s-3);
+  margin-bottom: var(--s-5);
+  border-bottom: 1px solid var(--border);
+}
+.section-head h2 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: var(--t-xl);
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+.section-head .right { font-size: var(--t-sm); color: var(--text-3); }
+
+/* =========================================================================
+   Cards (slides & decks)
+   ========================================================================= */
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: var(--s-5);
+}
+
+.grid.dense {
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: var(--s-4);
+}
+
+.card {
+  background: var(--bg-1);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: border-color var(--t-base-dur) var(--ease),
+              transform var(--t-base-dur) var(--ease),
+              background var(--t-base-dur) var(--ease);
+  cursor: pointer;
+}
+.card:hover {
+  border-color: var(--border-strong);
+  background: var(--bg-2);
+  transform: translateY(-1px);
+}
+.card .thumb {
+  aspect-ratio: 16 / 9;
+  background: #000;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  border-bottom: 1px solid var(--border);
+}
+.card .thumb > div { max-width: 100%; max-height: 100%; }
+.card .meta {
+  padding: var(--s-3) var(--s-4) var(--s-4);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.card .meta .title {
+  font-size: var(--t-md);
+  font-weight: 500;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.card .meta .sub {
+  font-size: var(--t-xs);
+  color: var(--text-3);
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+}
+.card .meta .sub .dot { color: var(--text-faint); }
+.card .meta .path {
+  font-family: var(--font-mono);
+  font-size: var(--t-xs);
+  color: var(--text-3);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* =========================================================================
+   Buttons & inputs
+   ========================================================================= */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 32px;
+  padding: 0 12px;
+  background: var(--accent);
+  color: white;
+  border: 1px solid transparent;
+  border-radius: var(--r-md);
+  font-size: var(--t-base);
+  font-weight: 500;
+  cursor: pointer;
+  transition: background var(--t-fast) var(--ease), transform var(--t-fast) var(--ease);
+}
+.btn:hover { background: var(--accent-hover); }
+.btn:active { transform: translateY(0.5px); }
+
+.btn.ghost {
+  background: transparent;
+  color: var(--text);
+  border-color: var(--border);
+}
+.btn.ghost:hover { background: var(--bg-2); border-color: var(--border-strong); }
+
+.btn.subtle {
+  background: var(--bg-2);
+  color: var(--text);
+  border-color: var(--border);
+}
+.btn.subtle:hover { background: var(--bg-3); }
+
+.btn.is-on {
+  background: var(--accent-bg);
+  border-color: var(--accent);
+  color: var(--text);
+}
+
+.btn.small { height: 26px; padding: 0 10px; font-size: var(--t-sm); }
+
+.input {
+  width: 100%;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  padding: 8px 12px;
+  font-size: var(--t-base);
+  color: var(--text);
+  transition: border-color var(--t-fast) var(--ease), background var(--t-fast) var(--ease);
+}
+.input:focus { outline: none; border-color: var(--accent); background: var(--bg-1); }
+.input::placeholder { color: var(--text-3); }
+
+.kbd {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 4px;
+  border: 1px solid var(--border-strong);
+  border-radius: 4px;
+  background: var(--bg-2);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-2);
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: 100px;
+  background: var(--bg-3);
+  color: var(--text-2);
+  font-size: var(--t-xs);
+  border: 1px solid var(--border);
+}
+
+.live-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 10px 2px 8px;
+  border-radius: 100px;
+  background: rgba(32, 201, 151, 0.12);
+  color: var(--ok);
+  border: 1px solid rgba(32, 201, 151, 0.28);
+  font-size: var(--t-xs);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+}
+.live-badge:hover { color: var(--ok); background: rgba(32, 201, 151, 0.18); }
+.live-badge .dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--ok);
+  box-shadow: 0 0 0 0 rgba(32, 201, 151, 0.6);
+  animation: live-pulse 2s ease-in-out infinite;
+}
+@keyframes live-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(32, 201, 151, 0.5); }
+  50% { box-shadow: 0 0 0 5px rgba(32, 201, 151, 0); }
+}
+
+/* =========================================================================
+   Empty states
+   ========================================================================= */
+
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--s-3);
+  padding: var(--s-8);
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--r-lg);
+  background: var(--bg-1);
+  max-width: 640px;
+}
+.empty h3 { margin: 0; font-family: var(--font-display); font-weight: 500; font-size: var(--t-xl); letter-spacing: -0.01em; }
+.empty p { margin: 0; color: var(--text-2); }
+.empty code { background: var(--bg-3); padding: 1px 6px; border-radius: var(--r-sm); border: 1px solid var(--border); font-size: var(--t-sm); }
+
+/* =========================================================================
+   Deck viewer
+   ========================================================================= */
+
+.viewer {
+  position: fixed;
+  inset: 0;
+  background: #000;
+  display: flex;
+  flex-direction: column;
+  z-index: 10;
+}
+.viewer-stage {
+  flex: 1;
+  display: grid;
+  place-items: center;
+  padding: 4vh 4vw;
+  overflow: hidden;
+}
+.viewer-stage > * { transition: opacity var(--t-base-dur) var(--ease); }
+
+.viewer-chrome {
+  position: absolute;
+  inset: 0 0 auto 0;
+  display: flex;
+  align-items: center;
+  gap: var(--s-4);
+  padding: var(--s-4) var(--s-6);
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.8) 0%, transparent 100%);
+  pointer-events: none;
+  transition: opacity var(--t-base-dur) var(--ease);
+  z-index: 5;
+}
+.viewer-chrome > * { pointer-events: auto; }
+.viewer.idle .viewer-chrome,
+.viewer.idle .viewer-foot { opacity: 0; }
+
+.viewer-chrome .title { font-family: var(--font-display); font-size: var(--t-lg); font-weight: 500; }
+.viewer-chrome .subtitle { font-size: var(--t-xs); color: var(--text-3); letter-spacing: 0.04em; text-transform: uppercase; }
+.viewer-chrome .actions { margin-left: auto; display: flex; gap: var(--s-2); }
+
+.viewer-foot {
+  position: absolute;
+  inset: auto 0 0 0;
+  display: flex;
+  flex-direction: column;
+  padding: var(--s-3) var(--s-6);
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, transparent 100%);
+  pointer-events: none;
+  transition: opacity var(--t-base-dur) var(--ease);
+  z-index: 5;
+}
+.viewer-foot > * { pointer-events: auto; }
+.viewer-foot .row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: var(--t-sm);
+  color: var(--text-2);
+  margin-bottom: var(--s-2);
+}
+.viewer-foot .counter { font-variant-numeric: tabular-nums; color: var(--text-2); }
+.viewer-foot .progress {
+  height: 2px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 100px;
+  overflow: hidden;
+}
+.viewer-foot .progress > div {
+  height: 100%;
+  background: var(--accent);
+  transition: width var(--t-base-dur) var(--ease);
+}
+
+.viewer-strip {
+  display: flex;
+  gap: var(--s-2);
+  overflow-x: auto;
+  padding: var(--s-3) var(--s-5);
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(8px);
+  border-top: 1px solid var(--border);
+}
+.viewer-strip.hidden { display: none; }
+.viewer-strip .strip-thumb {
+  flex: 0 0 auto;
+  width: 140px;
+  aspect-ratio: 16 / 9;
+  border: 2px solid transparent;
+  border-radius: var(--r-md);
+  overflow: hidden;
+  cursor: pointer;
+  background: #000;
+  display: grid;
+  place-items: center;
+  opacity: 0.6;
+  transition: opacity var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease);
+}
+.viewer-strip .strip-thumb:hover { opacity: 1; }
+.viewer-strip .strip-thumb.active { border-color: var(--accent); opacity: 1; }
+
+/* Crossfade */
+.slide-fade {
+  position: absolute;
+  /* Inset as margin (not padding): the Slide scaler measures this element's
+     border box, so any padding here would make the scaled canvas wider than
+     the content box and overflow on one edge. Keep padding 0. */
+  inset: 2vh 2vw;
+  display: grid;
+  place-items: center;
+  opacity: 0;
+  transition: opacity var(--t-base-dur) var(--ease);
+  padding: 0;
+}
+.slide-fade.show { opacity: 1; }
+
+/* =========================================================================
+   Edit / detail rows
+   ========================================================================= */
+
+.edit-list { display: flex; flex-direction: column; gap: 6px; margin-top: var(--s-4); }
+.edit-row {
+  display: grid;
+  grid-template-columns: 32px 1fr auto;
+  gap: var(--s-3);
+  align-items: center;
+  padding: var(--s-3) var(--s-4);
+  background: var(--bg-1);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  transition: border-color var(--t-fast) var(--ease);
+}
+.edit-row:hover { border-color: var(--border-strong); }
+.edit-row .idx { color: var(--text-3); font-size: var(--t-sm); text-align: right; font-variant-numeric: tabular-nums; }
+.edit-row .path { font-family: var(--font-mono); font-size: var(--t-sm); color: var(--text-2); }
+
+/* =========================================================================
+   Print (PDF export)
+   ========================================================================= */
+
+.print-root .print-page {
+  width: 1920px;
+  height: 1080px;
+  page-break-after: always;
+  break-after: page;
+  overflow: hidden;
+  /* Named page → drives per-slide PDF page size (see @page rules below). */
+  page: landscape;
+}
+.print-root .print-page[data-orientation='portrait'] {
+  /* US Letter at 96dpi (8.5×11in). The Slide scales its canvas to fit this. */
+  width: 816px;
+  height: 1056px;
+  page: portrait;
+}
+.print-root .print-page:last-child {
+  page-break-after: auto;
+  break-after: auto;
+}
+
+/* Named pages let a single PDF mix landscape and portrait pages. Chromium
+   honors these when Playwright exports with preferCSSPageSize: true.
+   Portrait is a true US Letter page (emits a 612×792pt MediaBox). */
+@page landscape {
+  size: 1920px 1080px;
+  margin: 0;
+}
+@page portrait {
+  size: 8.5in 11in;
+  margin: 0;
+}
+
+@media print {
+  body { background: white; }
+  .print-root { margin: 0; padding: 0; }
+
+  /* Print safety. Chromium's print pipeline turns blurred box-shadows into
+     transparency groups that some PDF viewers (macOS Preview) render as hard
+     grey boxes, and SVG-filter textures (feTurbulence grain) make pages huge
+     and slow to paint. Flatten both for export — borders carry card edges in
+     print. Slides opt textures out with the .print-hide class. */
+  .slide-canvas, .slide-canvas * { box-shadow: none !important; }
+  .print-hide { display: none !important; }
+}

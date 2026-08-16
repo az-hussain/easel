@@ -1,0 +1,38 @@
+{
+  "name": "gallery",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview --port 4173",
+    "export": "node scripts/export-pdf.mjs",
+    "publish": "node scripts/publish.mjs",
+    "unpublish": "node scripts/unpublish.mjs",
+    "new:slide": "node scripts/create-slide.mjs",
+    "new:deck": "node scripts/create-deck.mjs",
+    "edit:deck": "node scripts/edit-deck.mjs",
+    "add:slide": "node scripts/add-slide.mjs",
+    "remove:slide": "node scripts/remove-slide.mjs",
+    "move:slide": "node scripts/move-slide.mjs"
+  },
+  "dependencies": {
+    "lucide-react": "^1.22.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.26.2",
+    "simple-icons": "^16.21.0"
+  },
+  "devDependencies": {
+    "@types/node": "^25.9.1",
+    "@types/react": "^18.3.5",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^4.3.1",
+    "pdf-lib": "^1.17.1",
+    "playwright": "^1.47.0",
+    "typescript": "^5.6.2",
+    "vite": "^5.4.6",
+    "wrangler": "^4.95.0"
+  }
+}
