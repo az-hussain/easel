@@ -5,7 +5,7 @@ export const meta = {
   tags: ['outro'],
 }
 
-export const notes = 'Closing slide. Local to this deck — not promoted to the shared gallery.'
+export const notes = 'Closing slide. Local to this deck — not promoted to the shared library.'
 
 export default function Thanks() {
   return (

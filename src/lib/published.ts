@@ -1,4 +1,4 @@
-import publishedRaw from '../../.gallery/published.json'
+import publishedRaw from '../../.easel/published.json'
 
 export interface Publication {
   url: string

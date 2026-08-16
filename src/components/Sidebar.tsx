@@ -11,7 +11,7 @@ export function Sidebar() {
       <div className="workspace">
         <div className="mark">g</div>
         <div>
-          <div className="title">gallery</div>
+          <div className="title">easel</div>
           <div className="subtitle">slide library</div>
         </div>
       </div>

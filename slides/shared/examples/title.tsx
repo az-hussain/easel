@@ -12,7 +12,7 @@ export default function Title() {
     <Slide background="linear-gradient(135deg, #0a0b0f 0%, #1a1d2e 60%, #2c2247 100%)">
       <div style={{ padding: 160, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
         <div style={{ fontSize: 24, letterSpacing: 6, opacity: 0.5, textTransform: 'uppercase' }}>
-          Gallery
+          Easel
         </div>
         <h1 style={{ fontSize: 128, margin: '24px 0 0', lineHeight: 1.02, fontWeight: 600 }}>
           A deck built<br />from code.

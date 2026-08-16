@@ -6,10 +6,10 @@
  *   npm run unpublish -- <deck-name> [--yes]
  *
  * Flow:
- *   1. Look up the deck in .gallery/published.json to find its CF project name.
+ *   1. Look up the deck in .easel/published.json to find its CF project name.
  *   2. Confirm with the user.
  *   3. Delete the CF Pages project (kills the URL).
- *   4. Remove the entry from .gallery/published.json.
+ *   4. Remove the entry from .easel/published.json.
  *
  * Note: deletion is irreversible from our side, but CF retains deployment
  * history in their dashboard for a short window if you really need to recover.
@@ -22,7 +22,7 @@ import { createInterface } from 'node:readline/promises'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const ROOT = resolve(__dirname, '..')
-const PUBLISHED_PATH = resolve(ROOT, '.gallery/published.json')
+const PUBLISHED_PATH = resolve(ROOT, '.easel/published.json')
 
 const args = process.argv.slice(2)
 if (args.length === 0 || args.includes('--help') || args.includes('-h')) {
@@ -43,7 +43,7 @@ try { published = JSON.parse(await readFile(PUBLISHED_PATH, 'utf8')) } catch {}
 
 const entry = published[deckName]
 if (!entry) {
-  console.error(`error: deck "${deckName}" is not in .gallery/published.json — nothing to unpublish.`)
+  console.error(`error: deck "${deckName}" is not in .easel/published.json — nothing to unpublish.`)
   console.error(`       (If you published from a different machine and need to take it down,`)
   console.error(`        either pull the latest published.json or run:`)
   console.error(`        npx wrangler pages project delete <project-name>)`)
@@ -95,7 +95,7 @@ await mkdir(dirname(PUBLISHED_PATH), { recursive: true })
 await writeFile(PUBLISHED_PATH, JSON.stringify(published, null, 2) + '\n')
 
 console.log(`\n✓ Took ${entry.url} offline.`)
-console.log(`  Removed from .gallery/published.json — commit when ready.`)
+console.log(`  Removed from .easel/published.json — commit when ready.`)
 
 function runCmd(cmd, args, opts) {
   return new Promise((res, rej) => {

@@ -11,10 +11,10 @@
  *   3. Ensure wrangler is authenticated.
  *   4. Build the single-deck SPA via vite.publish.config.ts.
  *   5. Deploy via `wrangler pages deploy`.
- *   6. Record URL in .gallery/published.json.
+ *   6. Record URL in .easel/published.json.
  *
  * Notes:
- *   - The project name is `<prefix>-<deck>` (default prefix from .gallery/config.json).
+ *   - The project name is `<prefix>-<deck>` (default prefix from .easel/config.json).
  *   - Pages.dev subdomains are public-by-default. Don't publish confidential decks.
  *   - First-time setup: run `npx wrangler login` once.
  */
@@ -28,8 +28,8 @@ import { randomBytes } from 'node:crypto'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const ROOT = resolve(__dirname, '..')
-const PUBLISHED_PATH = resolve(ROOT, '.gallery/published.json')
-const CONFIG_PATH = resolve(ROOT, '.gallery/config.json')
+const PUBLISHED_PATH = resolve(ROOT, '.easel/published.json')
+const CONFIG_PATH = resolve(ROOT, '.easel/config.json')
 
 const args = process.argv.slice(2)
 if (args.length === 0 || args.includes('--help') || args.includes('-h')) {
@@ -59,7 +59,7 @@ if (!Array.isArray(manifest.slides) || manifest.slides.length === 0) {
 }
 
 // --- 2. Resolve config + project name --------------------------------------
-let config = { host: 'cloudflare-pages', projectPrefix: 'gallery' }
+let config = { host: 'cloudflare-pages', projectPrefix: 'easel' }
 try {
   config = { ...config, ...JSON.parse(await readFile(CONFIG_PATH, 'utf8')) }
 } catch {}
@@ -171,7 +171,7 @@ async function createProjectWithCollisionFallback(name) {
 }
 
 // Parse URL from wrangler output. Wrangler prints a line like:
-//   ✨ Deployment complete! Take a peek over at https://abc.gallery-foo.pages.dev
+//   ✨ Deployment complete! Take a peek over at https://abc.easel-foo.pages.dev
 const urlMatch = deploy.match(/https?:\/\/[\w.-]+\.pages\.dev/g)
 if (!urlMatch || urlMatch.length === 0) {
   console.error('error: could not parse deployment URL from wrangler output')
@@ -199,7 +199,7 @@ await mkdir(dirname(PUBLISHED_PATH), { recursive: true })
 await writeFile(PUBLISHED_PATH, JSON.stringify(published, null, 2) + '\n')
 
 console.log(`\n✓ Live: ${liveUrl}`)
-console.log(`  Recorded in .gallery/published.json — commit when ready.`)
+console.log(`  Recorded in .easel/published.json — commit when ready.`)
 
 // --- helpers ----------------------------------------------------------------
 

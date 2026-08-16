@@ -1,4 +1,4 @@
-# gallery
+# easel
 
 A local, git-backed slide library. Slides are React components. Decks are JSON manifests that point at them. Headless Chromium renders a deck to a 1920×1080 PDF.
 
@@ -8,7 +8,7 @@ It's built for one workflow: **clone the repo, point your AI coding agent at it,
 
 ```bash
 git clone <this-repo>
-cd gallery
+cd easel
 npm install
 npx playwright install chromium    # one-time, ~90MB
 npm run dev                         # http://localhost:5173
@@ -85,7 +85,7 @@ This is the surface your agent will drive.
 | `npm run remove:slide -- <deck> <pos-or-path>` | Remove a slide from a manifest. (Does not delete the file.) |
 | `npm run move:slide -- <deck> <from> <to>` | Reorder. `<to>` is 1-based, `start`, or `end`. |
 | `npm run export -- <deck> [--out file.pdf] [--no-build]` | Build a PDF. |
-| `npm run publish -- <deck> [--yes]` | Deploy the deck to Cloudflare Pages. Returns a public `*.pages.dev` URL. Records it in `.gallery/published.json`. |
+| `npm run publish -- <deck> [--yes]` | Deploy the deck to Cloudflare Pages. Returns a public `*.pages.dev` URL. Records it in `.easel/published.json`. |
 | `npm run unpublish -- <deck> [--yes]` | Delete the deck's CF project and take the URL offline. |
 
 Every script exits non-zero with a useful message on failure.
@@ -137,19 +137,19 @@ Click zones on the left/right 18% of the slide also navigate prev/next.
 # First-time setup: create a (free) Cloudflare account, then
 npx wrangler login
 
-# Optional but recommended: set a unique projectPrefix in .gallery/config.json
+# Optional but recommended: set a unique projectPrefix in .easel/config.json
 # (e.g. your username or company name) so your URLs don't collide with anyone else's.
 
 # Publish:
 npm run publish -- q3-review
-# → https://gallery-q3-review.pages.dev (or with your custom prefix)
+# → https://easel-q3-review.pages.dev (or with your custom prefix)
 ```
 
 The URL is public — anyone who has it can view. Pages.dev URLs aren't indexed unless you link them, but they aren't authenticated either. For confidential decks, send the PDF instead until we add auth.
 
 If the project name is already taken on Cloudflare (the `*.pages.dev` namespace is shared), the script auto-appends a random 4-char suffix and remembers it. Re-running `publish` for the same deck always hits the same URL.
 
-`.gallery/published.json` tracks what's live. The UI surfaces a "Live" badge on the deck card linking to the URL — anyone who pulls the repo sees it.
+`.easel/published.json` tracks what's live. The UI surfaces a "Live" badge on the deck card linking to the URL — anyone who pulls the repo sees it.
 
 `npm run unpublish -- <deck>` deletes the CF project and removes the entry.
 

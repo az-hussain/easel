@@ -1,6 +1,6 @@
 # CLAUDE.md — operating notes for agents working in this repo
 
-You are working in **gallery**, a local-first, git-backed slide library. Slides are React components. Decks are JSON manifests that reference slides by path. Everything is files; the CLI is the API. There is no backend, no DB, no cloud — and that is intentional.
+You are working in **easel**, a local-first, git-backed slide library. Slides are React components. Decks are JSON manifests that reference slides by path. Everything is files; the CLI is the API. There is no backend, no DB, no cloud — and that is intentional.
 
 This file teaches you the conventions you need to operate here productively without asking the user obvious questions.
 
@@ -121,12 +121,12 @@ What you need to know:
 - **Publishing is an external action.** Don't run it without the user's explicit instruction. Confirm the deck name and that they want it public before executing.
 - **First-time setup is one command.** If the user has never published, they need `npx wrangler login` once. Surface this if `wrangler whoami` fails.
 - **pages.dev URLs are public.** No auth. Don't publish anything sensitive without telling the user that anyone with the link can see it.
-- **Published state is tracked in `.gallery/published.json`.** This file is committed to git. The act of publishing updates it; the user commits when ready.
+- **Published state is tracked in `.easel/published.json`.** This file is committed to git. The act of publishing updates it; the user commits when ready.
 - **A "Live" badge appears in the UI** on decks that have been published. Clicking it opens the URL.
 
-The exact URL is determined by `<projectPrefix>-<deck>` where the prefix is from `.gallery/config.json` (default `gallery`). The user can override per-call with `--prefix foo`.
+The exact URL is determined by `<projectPrefix>-<deck>` where the prefix is from `.easel/config.json` (default `easel`). The user can override per-call with `--prefix foo`.
 
-**Subdomain collisions.** `*.pages.dev` is a global namespace across all Cloudflare users. If `<prefix>-<deck>` is already taken by someone else, the script automatically appends a 4-char random suffix (e.g. `gallery-foo-x4f9.pages.dev`) and saves the actual project name in `published.json`. To minimize collisions, the user should set a distinctive `projectPrefix` in `.gallery/config.json` — their company name or username works well. If the user mentions URL collisions or wants a custom URL, point them at that file.
+**Subdomain collisions.** `*.pages.dev` is a global namespace across all Cloudflare users. If `<prefix>-<deck>` is already taken by someone else, the script automatically appends a 4-char random suffix (e.g. `easel-foo-x4f9.pages.dev`) and saves the actual project name in `published.json`. To minimize collisions, the user should set a distinctive `projectPrefix` in `.easel/config.json` — their company name or username works well. If the user mentions URL collisions or wants a custom URL, point them at that file.
 
 **Taking a deck offline:** `npm run unpublish -- <deck>` deletes the CF project and removes the entry from `published.json`. The URL stops resolving immediately. Always confirm with the user before running — once deleted, the project name becomes available globally again (anyone could claim it).
 
